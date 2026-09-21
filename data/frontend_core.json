@@ -1,0 +1,1144 @@
+{
+  "meta": {
+    "project_name": "BC Anchor Impact Lab",
+    "analysis_period": "2026-01~2026-06",
+    "geography": "대한민국 255개 시군구",
+    "industry_scope": "핵심 8개 업종",
+    "pipeline": [
+      "M1 진단",
+      "M2 정규화",
+      "M3 Peer Group",
+      "M4 우선순위·강건성",
+      "M5 처방·사후검증 설계"
+    ],
+    "M1": {
+      "source": "M1_통합_전처리_및_분석베이스_v2.xlsx",
+      "status": "팀 통합 M1 발견",
+      "core8_rows": 2040,
+      "stable_candidates": 460
+    },
+    "M2": {
+      "rows": 2040,
+      "complete_m2_gap_rows": 2034,
+      "excluded_m2_gap_rows": 6,
+      "explicit_requested_six_axis_columns_found": false,
+      "six_axis_display_mapping_confirmed": true,
+      "six_axes": [
+        "M2_Demand_Specialization",
+        "M2_Demand_Supply_Gap",
+        "M2_Consumption_Scale",
+        "M2_Supply_Density",
+        "M2_Consumption_Diversity",
+        "M2_Supply_Diversity"
+      ],
+      "display_names": {
+        "M2_Demand_Specialization": "수요 특화도",
+        "M2_Demand_Supply_Gap": "수요 공급 불균형",
+        "M2_Consumption_Scale": "소비 규모",
+        "M2_Supply_Density": "공급 밀도",
+        "M2_Consumption_Diversity": "소비 다양성",
+        "M2_Supply_Diversity": "공급 다양성"
+      },
+      "saved_variable_mapping": {
+        "M2_Demand_Specialization": "rs_m2_spend_lq",
+        "M2_Demand_Supply_Gap": "rs_m2_gap",
+        "M2_Consumption_Scale": "rs_m2_spend_per_capita",
+        "M2_Supply_Density": "rs_m2_stores_per_10k",
+        "M2_Consumption_Diversity": "rs_m2_spend_entropy",
+        "M2_Supply_Diversity": "rs_m2_supply_entropy"
+      },
+      "note": "개념명 자체는 CSV 컬럼이 아니지만 M3 v2 통합분석 notebook의 M2 생성 코드로 6개 표시 매핑을 확정. 원본 컬럼은 rename하지 않음."
+    },
+    "M3": {
+      "source_archive": "M3_v2_processed.zip",
+      "features": 19,
+      "pca_components": 6,
+      "cumulative_explained_variance_approx": 0.8575,
+      "k": 3,
+      "silhouette_approx": 0.2838,
+      "calinski_harabasz_approx": 83.2971,
+      "subsample_fraction": 0.8,
+      "subsample_repetitions": 100,
+      "k3_mean_ari_approx": 0.9584,
+      "note": "방법론 값은 M3_v2 통합분석 notebook 저장 출력에서 확인; 군집 파일 255행에는 252개 직접학습+3개 사후배정이 포함됨.",
+      "group_counts": {
+        "외식 전문업종 특화형": 20,
+        "도시 생활균형형": 145,
+        "소규모 생활필수 집중형": 90
+      }
+    },
+    "M4": {
+      "official_pool": 460,
+      "peer_top10": 30,
+      "core_robust": 9,
+      "priority_field_review": 6,
+      "exploratory_separate": 232
+    },
+    "M5": {
+      "core9": 9,
+      "linkage": 27,
+      "protection": 9,
+      "stage2_validation": "71 PASS / 0 FAIL",
+      "stage3_validation": "53 PASS / 0 FAIL",
+      "external_role": "외부 실제 앵커 사례를 활용한 탐색적 준실험 검증"
+    },
+    "key_counts": {
+      "regions": 255,
+      "core_industries": 8,
+      "official_candidates": 460,
+      "peer_top10_combined": 30,
+      "core_robust": 9,
+      "priority_field_review": 6,
+      "exploratory": 232,
+      "linkage": 27,
+      "protection": 9,
+      "external_validation_cases": 3
+    },
+    "interpretation_principles": [
+      "BC카드 데이터는 전체 시장이 아님",
+      "분석기간은 2026년 1~6월",
+      "시군구 단위 집계",
+      "시간대·요일·개별가맹점·고객 이동경로가 없음",
+      "실제 임대료·세부 입지·현장 경쟁상황 미포함",
+      "업종 매핑 불확실성이 존재",
+      "Gap은 부족 점포 수가 아님",
+      "예상 매출을 계산한 것이 아님",
+      "성공확률을 계산한 것이 아님",
+      "Linkage는 실제 동반방문 인과관계를 의미하지 않음",
+      "Protection은 보호효과가 입증된 것이 아님",
+      "외부 DiD는 핵심 9 직접 효과검증이 아님"
+    ]
+  },
+  "methodology": {
+    "M1": {
+      "role": "지역×업종 수요·공급 진단 및 안정후보 선별"
+    },
+    "M2": {
+      "role": "저장된 지표 변환·정규화",
+      "six_named_axes_explicitly_available": false,
+      "display_mapping_confirmed": true,
+      "six_axes": [
+        {
+          "unit_or_scale": "Robust scaled: (x - median) / IQR",
+          "confidence": "CONFIRMED",
+          "evidence_file": "../M3_v2_processed.zip!M3_v2_processed/BC_Anchor_Impact_Lab_M3_v2_통합분석.ipynb",
+          "axis_order": "1",
+          "concept_name": "M2_Demand_Specialization",
+          "korean_display_name": "수요 특화도",
+          "source_raw_variable": "Spend_LQ",
+          "transformed_variable": "m2_spend_lq",
+          "final_saved_variable": "rs_m2_spend_lq",
+          "transformation": "ln(Spend_LQ), x>0 → 1~99% winsorization → robust scaling",
+          "interpretation": "같은 업종의 지역별 소비 특화 수준을 비교하는 정규화 축",
+          "caution": "성공확률이나 절대 수요량이 아니며 Count LQ·Demand Strength를 대신 사용하지 않음",
+          "evidence_location": "cell 51: log_Spend_LQ 생성; cell 56 lines 70~88, 138~166: m2_spend_lq 및 rs_ 생성"
+        },
+        {
+          "unit_or_scale": "Robust scaled: (x - median) / IQR",
+          "confidence": "CONFIRMED",
+          "evidence_file": "../M3_v2_processed.zip!M3_v2_processed/BC_Anchor_Impact_Lab_M3_v2_통합분석.ipynb",
+          "axis_order": "2",
+          "concept_name": "M2_Demand_Supply_Gap",
+          "korean_display_name": "수요 공급 불균형",
+          "source_raw_variable": "Gap_Combined_raw",
+          "transformed_variable": "m2_gap",
+          "final_saved_variable": "rs_m2_gap",
+          "transformation": "Gap_Combined_raw 유지(이미 log ratio) → robust scaling; winsorization 없음",
+          "interpretation": "금액·건수 수요와 공급의 상대적 구조 차이를 나타내는 정규화 축",
+          "caution": "Spend Gap 단독값이나 부족 점포 수가 아니며 Demand Strength로 대체하지 않음",
+          "evidence_location": "cell 51 keep_raw_cols; cell 56 lines 90~98, 138~166: m2_gap=Gap_Combined_raw 및 rs_ 생성"
+        },
+        {
+          "unit_or_scale": "Robust scaled: (x - median) / IQR",
+          "confidence": "CONFIRMED",
+          "evidence_file": "../M3_v2_processed.zip!M3_v2_processed/BC_Anchor_Impact_Lab_M3_v2_통합분석.ipynb",
+          "axis_order": "3",
+          "concept_name": "M2_Consumption_Scale",
+          "korean_display_name": "소비 규모",
+          "source_raw_variable": "spend_per_capita_domestic",
+          "transformed_variable": "m2_spend_per_capita",
+          "final_saved_variable": "rs_m2_spend_per_capita",
+          "transformation": "국내개인소비/평균인구×1인 기준 저장값 → log1p → robust scaling; winsorization 없음",
+          "interpretation": "인구 대비 BC 국내 개인카드 소비수준을 비교하는 정규화 축",
+          "caution": "전체 시장 매출이나 예상 매출이 아니며 절대 소비금액과 구분",
+          "evidence_location": "cell 51 log1p_cols; cell 56 lines 59~66, 138~166: m2_spend_per_capita 및 rs_ 생성"
+        },
+        {
+          "unit_or_scale": "Robust scaled: (x - median) / IQR",
+          "confidence": "CONFIRMED",
+          "evidence_file": "../M3_v2_processed.zip!M3_v2_processed/BC_Anchor_Impact_Lab_M3_v2_통합분석.ipynb",
+          "axis_order": "4",
+          "concept_name": "M2_Supply_Density",
+          "korean_display_name": "공급 밀도",
+          "source_raw_variable": "stores_per_10k",
+          "transformed_variable": "m2_stores_per_10k",
+          "final_saved_variable": "rs_m2_stores_per_10k",
+          "transformation": "3월 점포수/평균인구×10,000 저장값 → log1p → robust scaling; winsorization 없음",
+          "interpretation": "인구 1만명당 동종업종 공급수준을 비교하는 정규화 축",
+          "caution": "세부 입지의 실제 경쟁강도를 직접 의미하지 않음",
+          "evidence_location": "cell 51 log1p_cols; cell 56 lines 59~66, 138~166: m2_stores_per_10k 및 rs_ 생성"
+        },
+        {
+          "unit_or_scale": "Robust scaled: (x - median) / IQR",
+          "confidence": "CONFIRMED",
+          "evidence_file": "../M3_v2_processed.zip!M3_v2_processed/BC_Anchor_Impact_Lab_M3_v2_통합분석.ipynb",
+          "axis_order": "5",
+          "concept_name": "M2_Consumption_Diversity",
+          "korean_display_name": "소비 다양성",
+          "source_raw_variable": "spend_entropy_11",
+          "transformed_variable": "m2_spend_entropy",
+          "final_saved_variable": "rs_m2_spend_entropy",
+          "transformation": "Spend Entropy(11) 유지 → robust scaling; winsorization 없음",
+          "interpretation": "BC 11개 소비업종 구성의 다양성을 비교하는 정규화 축",
+          "caution": "HHI가 아니며 개별 업종의 수요 규모를 뜻하지 않음",
+          "evidence_location": "cell 51 keep_raw_cols; cell 56 lines 101~121, 138~166: m2_spend_entropy 및 rs_ 생성"
+        },
+        {
+          "unit_or_scale": "Robust scaled: (x - median) / IQR",
+          "confidence": "CONFIRMED",
+          "evidence_file": "../M3_v2_processed.zip!M3_v2_processed/BC_Anchor_Impact_Lab_M3_v2_통합분석.ipynb",
+          "axis_order": "6",
+          "concept_name": "M2_Supply_Diversity",
+          "korean_display_name": "공급 다양성",
+          "source_raw_variable": "supply_entropy_247",
+          "transformed_variable": "m2_supply_entropy",
+          "final_saved_variable": "rs_m2_supply_entropy",
+          "transformation": "Supply Entropy(247) → 1~99% winsorization → robust scaling",
+          "interpretation": "247개 세부업종 공급구성의 다양성을 비교하는 정규화 축",
+          "caution": "Supply HHI가 아니며 특정 후보업종의 공급량을 뜻하지 않음",
+          "evidence_location": "cell 54 winsor check; cell 56 lines 123~134, 138~166: m2_supply_entropy 및 rs_ 생성"
+        }
+      ]
+    },
+    "M3": {
+      "source_archive": "M3_v2_processed.zip",
+      "features": 19,
+      "pca_components": 6,
+      "cumulative_explained_variance_approx": 0.8575,
+      "k": 3,
+      "silhouette_approx": 0.2838,
+      "calinski_harabasz_approx": 83.2971,
+      "subsample_fraction": 0.8,
+      "subsample_repetitions": 100,
+      "k3_mean_ari_approx": 0.9584,
+      "note": "방법론 값은 M3_v2 통합분석 notebook 저장 출력에서 확인; 군집 파일 255행에는 252개 직접학습+3개 사후배정이 포함됨."
+    },
+    "M4": {
+      "role": "Peer 내 우선순위와 다중 강건성 검증",
+      "official_score": "박샘_기본점수"
+    },
+    "M5": {
+      "role": "Anchor·Linkage·Protection·Action·KPI 구성 및 외부 사례 탐색"
+    }
+  },
+  "peer_groups": [
+    {
+      "id": "0",
+      "name": "도시 생활균형형",
+      "region_count": 145
+    },
+    {
+      "id": "1",
+      "name": "소규모 생활필수 집중형",
+      "region_count": 90
+    },
+    {
+      "id": "2",
+      "name": "외식 전문업종 특화형",
+      "region_count": 20
+    }
+  ],
+  "core_anchors": [
+    {
+      "identity": {
+        "region_code": "11530",
+        "sido": "서울특별시",
+        "sigungu": "구로구",
+        "anchor_industry": "제과점",
+        "analysis_code": "8301"
+      },
+      "diagnosis": {
+        "M1": {
+          "Spend_LQ": "1.0570572369004825",
+          "Count_LQ": "1.2008124800807185",
+          "Supply_LQ_raw": "0.9242068925890122",
+          "Gap_Combined_raw": "0.1980629477637366",
+          "Demand_Strength_aux": "1.126644363687912"
+        },
+        "M2": {
+          "m2_demand_strength": "0.11924362508760998",
+          "m2_supply_lq": "-0.07881932267612658",
+          "m2_gap": "0.1980629477637366",
+          "m2_spend_entropy": "0.7933196369126834",
+          "m2_supply_entropy": "0.8502063692406242",
+          "rs_m2_demand_strength": "0.45266413947405654",
+          "rs_m2_supply_lq": "-0.06354221882118176",
+          "rs_m2_gap": "0.6322202598932025",
+          "rs_m2_spend_entropy": "0.6949199619437679",
+          "rs_m2_supply_entropy": "0.812534978987033"
+        }
+      },
+      "peer": {
+        "id": "",
+        "name": "도시 생활균형형"
+      },
+      "ranking": {
+        "official_m4_score": "90.3429381171508",
+        "peer_rank": "1",
+        "success_probability": false
+      },
+      "decision": {
+        "review_level": "핵심 전략 후보",
+        "priority_field_review": "True",
+        "strategy_type": "공급 보완 우선 검토",
+        "robustness": "다중 검증 강건"
+      },
+      "portfolio": {
+        "anchor": "제과점",
+        "linkages": [
+          {
+            "industry": "서양음식",
+            "score": "60.473524",
+            "robustness": "강건"
+          },
+          {
+            "industry": "슈퍼마켓",
+            "score": "50.084964",
+            "robustness": "안정"
+          },
+          {
+            "industry": "일반한식",
+            "score": "43.119869",
+            "robustness": "안정"
+          }
+        ],
+        "protection": {
+          "industry": "스넥",
+          "score": "52.789038",
+          "label": "보호 모니터링 대상 업종"
+        }
+      },
+      "action": {
+        "type": "상권릴레이형",
+        "bc_benefit": "앵커 결제 후 7일 안에 서양음식·슈퍼마켓·일반한식 중 한 업종에서 쓰는 교차쿠폰을 제공하고 기존 스넥 사업자도 공동 캠페인에 포함",
+        "primary_kpi": "비앵커 이용금액 변화율 | 비앵커 이용건수 변화율 | 소비다양성 Entropy | 소비집중도 HHI",
+        "secondary_kpi": "연계업종 소비비중 | 스넥 점포밀도 | 수요-공급 Gap",
+        "protection_kpi": "스넥 이용금액 변화율 | 스넥 이용건수 변화율 | 스넥 점포밀도",
+        "evaluation_design": "3개월은 조기점검, 6개월은 본평가로 두고 같은 Peer Group의 복수 유사 비개입 지역을 비교군으로 매칭한다. 사전추세 확인과 분기·계절 통제 후 이중차분 추정치로 해석"
+      },
+      "warnings": [],
+      "recommendation": "서울특별시 구로구 제과점은 기존 M4/M5의 핵심 전략 후보이며 동일 Peer 내 1위·다중 검증 강건으로 저장되어 있고 기존 주의사항은 ‘주의사항 없음’입니다. 팀공유 처방에 따라 연계 지원 검토 업종(서양음식·슈퍼마켓·일반한식)을 함께 검토하되 민감도는 ‘서양음식: 강건 | 슈퍼마켓: 안정 | 일반한식: 안정’와 같이 구분합니다. 스넥은 보호 모니터링 대상 업종으로 두고 보호관계 시나리오에 따른 선택 변화를 확인합니다. 상권릴레이형 및 BC 공동혜택은 실행안으로 검토하고 실행 후 주·보조·보호 KPI를 재검증해야 합니다."
+    },
+    {
+      "identity": {
+        "region_code": "28140",
+        "sido": "인천광역시",
+        "sigungu": "동구",
+        "anchor_industry": "슈퍼마켓",
+        "analysis_code": "4020"
+      },
+      "diagnosis": {
+        "M1": {
+          "Spend_LQ": "1.768204150862159",
+          "Count_LQ": "1.5991712124289228",
+          "Supply_LQ_raw": "1.3016297654719218",
+          "Gap_Combined_raw": "0.2561078201193411",
+          "Demand_Strength_aux": "1.6815650970914249"
+        },
+        "M2": {
+          "m2_demand_strength": "0.5197249651517303",
+          "m2_supply_lq": "0.2636171450323891",
+          "m2_gap": "0.2561078201193411",
+          "m2_spend_entropy": "0.6990558600783031",
+          "m2_supply_entropy": "0.8371468392255164",
+          "rs_m2_demand_strength": "1.4942992746258188",
+          "rs_m2_supply_lq": "0.8716118702217274",
+          "rs_m2_gap": "0.8164171925861673",
+          "rs_m2_spend_entropy": "-0.27236984718526974",
+          "rs_m2_supply_entropy": "0.46531504873089063"
+        }
+      },
+      "peer": {
+        "id": "",
+        "name": "소규모 생활필수 집중형"
+      },
+      "ranking": {
+        "official_m4_score": "92.39051641268892",
+        "peer_rank": "1",
+        "success_probability": false
+      },
+      "decision": {
+        "review_level": "핵심 전략 후보",
+        "priority_field_review": "True",
+        "strategy_type": "공급 보완 우선 검토",
+        "robustness": "다중 검증 강건"
+      },
+      "portfolio": {
+        "anchor": "슈퍼마켓",
+        "linkages": [
+          {
+            "industry": "제과점",
+            "score": "85.945600",
+            "robustness": "강건"
+          },
+          {
+            "industry": "일식회집",
+            "score": "82.142857",
+            "robustness": "강건"
+          },
+          {
+            "industry": "서양음식",
+            "score": "59.078063",
+            "robustness": "강건"
+          }
+        ],
+        "protection": {
+          "industry": "편의점",
+          "score": "75.191115",
+          "label": "보호 모니터링 대상 업종"
+        }
+      },
+      "action": {
+        "type": "보호우선형",
+        "bc_benefit": "앵커 단독할인을 피하고 기존 편의점 사업자에 더 높은 적립을 배정해 제과점·일식회집·서양음식과 7일 내 교차쿠폰을 운영",
+        "primary_kpi": "비앵커 이용금액 변화율 | 비앵커 이용건수 변화율 | 소비다양성 Entropy | 소비집중도 HHI",
+        "secondary_kpi": "연계업종 소비비중 | 편의점 점포밀도 | 수요-공급 Gap",
+        "protection_kpi": "편의점 이용금액 변화율 | 편의점 이용건수 변화율 | 편의점 점포밀도",
+        "evaluation_design": "3개월은 조기점검, 6개월은 본평가로 두고 같은 Peer Group의 복수 유사 비개입 지역을 비교군으로 매칭한다. 사전추세 확인과 분기·계절 통제 후 이중차분 추정치로 해석"
+      },
+      "warnings": [],
+      "recommendation": "인천광역시 동구 슈퍼마켓은 기존 M4/M5의 핵심 전략 후보이며 동일 Peer 내 1위·다중 검증 강건으로 저장되어 있고 기존 주의사항은 ‘주의사항 없음’입니다. 팀공유 처방에 따라 연계 지원 검토 업종(제과점·일식회집·서양음식)을 함께 검토하되 민감도는 ‘제과점: 강건 | 일식회집: 강건 | 서양음식: 강건’와 같이 구분합니다. 편의점은 보호 모니터링 대상 업종으로 두고 보호관계 시나리오에 따른 선택 변화를 확인합니다. 보호우선형 및 BC 공동혜택은 실행안으로 검토하고 실행 후 주·보조·보호 KPI를 재검증해야 합니다."
+    },
+    {
+      "identity": {
+        "region_code": "43745",
+        "sido": "충청북도",
+        "sigungu": "증평군",
+        "anchor_industry": "슈퍼마켓",
+        "analysis_code": "4020"
+      },
+      "diagnosis": {
+        "M1": {
+          "Spend_LQ": "1.4830415947658606",
+          "Count_LQ": "1.252153081196063",
+          "Supply_LQ_raw": "1.0411490623529691",
+          "Gap_Combined_raw": "0.2691548516217118",
+          "Demand_Strength_aux": "1.3627160755006875"
+        },
+        "M2": {
+          "m2_demand_strength": "0.30947982250503053",
+          "m2_supply_lq": "0.040324970883318594",
+          "m2_gap": "0.2691548516217118",
+          "m2_spend_entropy": "0.7017705345708914",
+          "m2_supply_entropy": "0.806436461539074",
+          "rs_m2_demand_strength": "0.9474604942203868",
+          "rs_m2_supply_lq": "0.26182696295382685",
+          "rs_m2_gap": "0.8578200432766148",
+          "rs_m2_spend_entropy": "-0.24451315546373123",
+          "rs_m2_supply_entropy": "-0.35119635605094907"
+        }
+      },
+      "peer": {
+        "id": "",
+        "name": "소규모 생활필수 집중형"
+      },
+      "ranking": {
+        "official_m4_score": "85.43777676221694",
+        "peer_rank": "3",
+        "success_probability": false
+      },
+      "decision": {
+        "review_level": "핵심 전략 후보",
+        "priority_field_review": "True",
+        "strategy_type": "공급 보완 우선 검토",
+        "robustness": "다중 검증 강건"
+      },
+      "portfolio": {
+        "anchor": "슈퍼마켓",
+        "linkages": [
+          {
+            "industry": "스넥",
+            "score": "68.004759",
+            "robustness": "강건"
+          },
+          {
+            "industry": "제과점",
+            "score": "66.405588",
+            "robustness": "강건"
+          },
+          {
+            "industry": "일식회집",
+            "score": "57.142857",
+            "robustness": "안정"
+          }
+        ],
+        "protection": {
+          "industry": "편의점",
+          "score": "55.511093",
+          "label": "보호 모니터링 대상 업종"
+        }
+      },
+      "action": {
+        "type": "상권릴레이형",
+        "bc_benefit": "앵커 결제 후 7일 안에 스넥·제과점·일식회집 중 한 업종에서 쓰는 교차쿠폰을 제공하고 기존 편의점 사업자도 공동 캠페인에 포함",
+        "primary_kpi": "비앵커 이용금액 변화율 | 비앵커 이용건수 변화율 | 소비다양성 Entropy | 소비집중도 HHI",
+        "secondary_kpi": "연계업종 소비비중 | 편의점 점포밀도 | 수요-공급 Gap",
+        "protection_kpi": "편의점 이용금액 변화율 | 편의점 이용건수 변화율 | 편의점 점포밀도",
+        "evaluation_design": "3개월은 조기점검, 6개월은 본평가로 두고 같은 Peer Group의 복수 유사 비개입 지역을 비교군으로 매칭한다. 사전추세 확인과 분기·계절 통제 후 이중차분 추정치로 해석"
+      },
+      "warnings": [],
+      "recommendation": "충청북도 증평군 슈퍼마켓은 기존 M4/M5의 핵심 전략 후보이며 동일 Peer 내 3위·다중 검증 강건으로 저장되어 있고 기존 주의사항은 ‘주의사항 없음’입니다. 팀공유 처방에 따라 연계 지원 검토 업종(스넥·제과점·일식회집)을 함께 검토하되 민감도는 ‘스넥: 강건 | 제과점: 강건 | 일식회집: 안정’와 같이 구분합니다. 편의점은 보호 모니터링 대상 업종으로 두고 보호관계 시나리오에 따른 선택 변화를 확인합니다. 상권릴레이형 및 BC 공동혜택은 실행안으로 검토하고 실행 후 주·보조·보호 KPI를 재검증해야 합니다."
+    },
+    {
+      "identity": {
+        "region_code": "47230",
+        "sido": "경상북도",
+        "sigungu": "영천시",
+        "anchor_industry": "슈퍼마켓",
+        "analysis_code": "4020"
+      },
+      "diagnosis": {
+        "M1": {
+          "Spend_LQ": "1.7474990950864309",
+          "Count_LQ": "1.785788968805186",
+          "Supply_LQ_raw": "1.3686320853659042",
+          "Gap_Combined_raw": "0.2552112339070151",
+          "Demand_Strength_aux": "1.7665402930594003"
+        },
+        "M2": {
+          "m2_demand_strength": "0.5690229971008863",
+          "m2_supply_lq": "0.31381176319387133",
+          "m2_gap": "0.2552112339070151",
+          "m2_spend_entropy": "0.7071834108872155",
+          "m2_supply_entropy": "0.8065666880564246",
+          "rs_m2_demand_strength": "1.6225213839601849",
+          "rs_m2_supply_lq": "1.0086875232202654",
+          "rs_m2_gap": "0.813572007068427",
+          "rs_m2_spend_entropy": "-0.18896880667262134",
+          "rs_m2_supply_entropy": "-0.347733961751945"
+        }
+      },
+      "peer": {
+        "id": "",
+        "name": "소규모 생활필수 집중형"
+      },
+      "ranking": {
+        "official_m4_score": "83.8934238933451",
+        "peer_rank": "5",
+        "success_probability": false
+      },
+      "decision": {
+        "review_level": "핵심 전략 후보",
+        "priority_field_review": "True",
+        "strategy_type": "공급 보완 우선 검토",
+        "robustness": "다중 검증 강건"
+      },
+      "portfolio": {
+        "anchor": "슈퍼마켓",
+        "linkages": [
+          {
+            "industry": "일식회집",
+            "score": "76.587302",
+            "robustness": "강건"
+          },
+          {
+            "industry": "제과점",
+            "score": "63.489642",
+            "robustness": "강건"
+          },
+          {
+            "industry": "서양음식",
+            "score": "44.048258",
+            "robustness": "강건"
+          }
+        ],
+        "protection": {
+          "industry": "편의점",
+          "score": "53.402733",
+          "label": "보호 모니터링 대상 업종"
+        }
+      },
+      "action": {
+        "type": "상권릴레이형",
+        "bc_benefit": "앵커 결제 후 7일 안에 일식회집·제과점·서양음식 중 한 업종에서 쓰는 교차쿠폰을 제공하고 기존 편의점 사업자도 공동 캠페인에 포함",
+        "primary_kpi": "비앵커 이용금액 변화율 | 비앵커 이용건수 변화율 | 소비다양성 Entropy | 소비집중도 HHI",
+        "secondary_kpi": "연계업종 소비비중 | 편의점 점포밀도 | 수요-공급 Gap",
+        "protection_kpi": "편의점 이용금액 변화율 | 편의점 이용건수 변화율 | 편의점 점포밀도",
+        "evaluation_design": "3개월은 조기점검, 6개월은 본평가로 두고 같은 Peer Group의 복수 유사 비개입 지역을 비교군으로 매칭한다. 사전추세 확인과 분기·계절 통제 후 이중차분 추정치로 해석"
+      },
+      "warnings": [],
+      "recommendation": "경상북도 영천시 슈퍼마켓은 기존 M4/M5의 핵심 전략 후보이며 동일 Peer 내 5위·다중 검증 강건으로 저장되어 있고 기존 주의사항은 ‘주의사항 없음’입니다. 팀공유 처방에 따라 연계 지원 검토 업종(일식회집·제과점·서양음식)을 함께 검토하되 민감도는 ‘일식회집: 강건 | 제과점: 강건 | 서양음식: 강건’와 같이 구분합니다. 편의점은 보호 모니터링 대상 업종으로 두고 보호관계 시나리오에 따른 선택 변화를 확인합니다. 상권릴레이형 및 BC 공동혜택은 실행안으로 검토하고 실행 후 주·보조·보호 KPI를 재검증해야 합니다."
+    },
+    {
+      "identity": {
+        "region_code": "11170",
+        "sido": "서울특별시",
+        "sigungu": "용산구",
+        "anchor_industry": "중국음식",
+        "analysis_code": "8005"
+      },
+      "diagnosis": {
+        "M1": {
+          "Spend_LQ": "3.1524344731035394",
+          "Count_LQ": "3.4606360126519387",
+          "Supply_LQ_raw": "0.6883080453935305",
+          "Gap_Combined_raw": "1.5683324977624025",
+          "Demand_Strength_aux": "3.3029423647934806"
+        },
+        "M2": {
+          "m2_demand_strength": "0.6715303724508893",
+          "m2_supply_lq": "-0.3735188008570421",
+          "m2_gap": "1.5683324977624025",
+          "m2_spend_entropy": "0.7711127865244958",
+          "m2_supply_entropy": "0.8170804284066037",
+          "rs_m2_demand_strength": "1.8891387593406637",
+          "rs_m2_supply_lq": "-0.8683321522761617",
+          "rs_m2_gap": "4.98057073133589",
+          "rs_m2_spend_entropy": "0.4670438806459874",
+          "rs_m2_supply_entropy": "-0.06820015104840475"
+        }
+      },
+      "peer": {
+        "id": "",
+        "name": "외식 전문업종 특화형"
+      },
+      "ranking": {
+        "official_m4_score": "83.89606090698445",
+        "peer_rank": "1",
+        "success_probability": false
+      },
+      "decision": {
+        "review_level": "핵심 전략 후보",
+        "priority_field_review": "True",
+        "strategy_type": "공급 보완 우선 검토",
+        "robustness": "다중 검증 강건"
+      },
+      "portfolio": {
+        "anchor": "중국음식",
+        "linkages": [
+          {
+            "industry": "스넥",
+            "score": "72.532247",
+            "robustness": "강건"
+          },
+          {
+            "industry": "편의점",
+            "score": "66.647274",
+            "robustness": "강건"
+          },
+          {
+            "industry": "일반한식",
+            "score": "53.809524",
+            "robustness": "안정"
+          }
+        ],
+        "protection": {
+          "industry": "서양음식",
+          "score": "100.000000",
+          "label": "보호 모니터링 대상 업종"
+        }
+      },
+      "action": {
+        "type": "보호우선형",
+        "bc_benefit": "앵커 단독할인을 피하고 기존 서양음식 사업자에 더 높은 적립을 배정해 스넥·편의점·일반한식과 7일 내 교차쿠폰을 운영",
+        "primary_kpi": "비앵커 이용금액 변화율 | 비앵커 이용건수 변화율 | 소비다양성 Entropy | 소비집중도 HHI",
+        "secondary_kpi": "연계업종 소비비중 | 서양음식 점포밀도 | 수요-공급 Gap",
+        "protection_kpi": "서양음식 이용금액 변화율 | 서양음식 이용건수 변화율 | 서양음식 점포밀도",
+        "evaluation_design": "3개월은 조기점검, 6개월은 본평가로 두고 같은 Peer Group의 복수 유사 비개입 지역을 비교군으로 매칭한다. 사전추세 확인과 분기·계절 통제 후 이중차분 추정치로 해석"
+      },
+      "warnings": [],
+      "recommendation": "서울특별시 용산구 중국음식은 기존 M4/M5의 핵심 전략 후보이며 동일 Peer 내 1위·다중 검증 강건으로 저장되어 있고 기존 주의사항은 ‘주의사항 없음’입니다. 팀공유 처방에 따라 연계 지원 검토 업종(스넥·편의점·일반한식)을 함께 검토하되 민감도는 ‘스넥: 강건 | 편의점: 강건 | 일반한식: 안정’와 같이 구분합니다. 서양음식은 보호 모니터링 대상 업종으로 두고 보호관계 시나리오에 따른 선택 변화를 확인합니다. 보호우선형 및 BC 공동혜택은 실행안으로 검토하고 실행 후 주·보조·보호 KPI를 재검증해야 합니다."
+    },
+    {
+      "identity": {
+        "region_code": "11560",
+        "sido": "서울특별시",
+        "sigungu": "영등포구",
+        "anchor_industry": "서양음식",
+        "analysis_code": "8006"
+      },
+      "diagnosis": {
+        "M1": {
+          "Spend_LQ": "1.2994538346826416",
+          "Count_LQ": "1.2471238234004005",
+          "Supply_LQ_raw": "1.1632346502605593",
+          "Gap_Combined_raw": "0.0901873878199243",
+          "Demand_Strength_aux": "1.273019966316997"
+        },
+        "M2": {
+          "m2_demand_strength": "0.24139200391181165",
+          "m2_supply_lq": "0.15120461609188726",
+          "m2_gap": "0.0901873878199243",
+          "m2_spend_entropy": "0.7819161399466894",
+          "m2_supply_entropy": "0.8404723142476254",
+          "rs_m2_demand_strength": "0.7703669394715414",
+          "rs_m2_supply_lq": "0.5646263531656232",
+          "rs_m2_gap": "0.28989291127827005",
+          "rs_m2_spend_entropy": "0.5779027282398794",
+          "rs_m2_supply_entropy": "0.5537310333727159"
+        }
+      },
+      "peer": {
+        "id": "",
+        "name": "외식 전문업종 특화형"
+      },
+      "ranking": {
+        "official_m4_score": "83.82985766302548",
+        "peer_rank": "2",
+        "success_probability": false
+      },
+      "decision": {
+        "review_level": "핵심 전략 후보",
+        "priority_field_review": "False",
+        "strategy_type": "불균형 중심 신중 검토",
+        "robustness": "다중 검증 강건"
+      },
+      "portfolio": {
+        "anchor": "서양음식",
+        "linkages": [
+          {
+            "industry": "스넥",
+            "score": "73.682999",
+            "robustness": "강건"
+          },
+          {
+            "industry": "제과점",
+            "score": "65.952381",
+            "robustness": "강건"
+          },
+          {
+            "industry": "중국음식",
+            "score": "58.555241",
+            "robustness": "강건"
+          }
+        ],
+        "protection": {
+          "industry": "일식회집",
+          "score": "67.453688",
+          "label": "보호 모니터링 대상 업종"
+        }
+      },
+      "action": {
+        "type": "현장확인형",
+        "bc_benefit": "업종 매핑·현장 수요를 먼저 확인한 뒤 앵커와 스넥·기존 일식회집 사업자을 묶은 소규모 파일럿을 운영",
+        "primary_kpi": "비앵커 이용금액 변화율 | 비앵커 이용건수 변화율 | 소비다양성 Entropy | 소비집중도 HHI",
+        "secondary_kpi": "연계업종 소비비중 | 일식회집 점포밀도 | 수요-공급 Gap",
+        "protection_kpi": "일식회집 이용금액 변화율 | 일식회집 이용건수 변화율 | 일식회집 점포밀도",
+        "evaluation_design": "3개월은 조기점검, 6개월은 본평가로 두고 같은 Peer Group의 복수 유사 비개입 지역을 비교군으로 매칭한다. 사전추세 확인과 분기·계절 통제 후 이중차분 추정치로 해석"
+      },
+      "warnings": [
+        "동일 Peer·업종 수요 하위절반"
+      ],
+      "recommendation": "서울특별시 영등포구 서양음식은 기존 M4/M5의 핵심 전략 후보이며 동일 Peer 내 2위·다중 검증 강건으로 저장되어 있고 기존 주의사항은 ‘동일 Peer·업종 수요 하위절반’입니다. 팀공유 처방에 따라 연계 지원 검토 업종(스넥·제과점·중국음식)을 함께 검토하되 민감도는 ‘스넥: 강건 | 제과점: 강건 | 중국음식: 강건’와 같이 구분합니다. 일식회집은 보호 모니터링 대상 업종으로 두고 보호관계 시나리오에 따른 선택 변화를 확인합니다. 현장확인형 및 BC 공동혜택은 실행안으로 검토하고 실행 후 주·보조·보호 KPI를 재검증해야 합니다."
+    },
+    {
+      "identity": {
+        "region_code": "11650",
+        "sido": "서울특별시",
+        "sigungu": "서초구",
+        "anchor_industry": "일반한식",
+        "analysis_code": "8001"
+      },
+      "diagnosis": {
+        "M1": {
+          "Spend_LQ": "1.032404581608532",
+          "Count_LQ": "1.0895849954828989",
+          "Supply_LQ_raw": "0.6966139199700598",
+          "Gap_Combined_raw": "0.4203676946835771",
+          "Demand_Strength_aux": "1.0606095140948228"
+        },
+        "M2": {
+          "m2_demand_strength": "0.058843756164179466",
+          "m2_supply_lq": "-0.3615239385193976",
+          "m2_gap": "0.4203676946835771",
+          "m2_spend_entropy": "0.7616093914909884",
+          "m2_supply_entropy": "0.8164048155508574",
+          "rs_m2_demand_strength": "0.2955666187278137",
+          "rs_m2_supply_lq": "-0.8355755809985282",
+          "rs_m2_gap": "1.3376719362248972",
+          "rs_m2_spend_entropy": "0.36952458450967485",
+          "rs_m2_supply_entropy": "-0.0861629910878996"
+        }
+      },
+      "peer": {
+        "id": "",
+        "name": "외식 전문업종 특화형"
+      },
+      "ranking": {
+        "official_m4_score": "79.53492221118834",
+        "peer_rank": "3",
+        "success_probability": false
+      },
+      "decision": {
+        "review_level": "핵심 전략 후보",
+        "priority_field_review": "False",
+        "strategy_type": "불균형 중심 신중 검토",
+        "robustness": "다중 검증 강건"
+      },
+      "portfolio": {
+        "anchor": "일반한식",
+        "linkages": [
+          {
+            "industry": "중국음식",
+            "score": "85.790367",
+            "robustness": "강건"
+          },
+          {
+            "industry": "스넥",
+            "score": "74.853245",
+            "robustness": "강건"
+          },
+          {
+            "industry": "제과점",
+            "score": "67.543426",
+            "robustness": "강건"
+          }
+        ],
+        "protection": {
+          "industry": "일식회집",
+          "score": "79.372539",
+          "label": "보호 모니터링 대상 업종"
+        }
+      },
+      "action": {
+        "type": "현장확인형",
+        "bc_benefit": "업종 매핑·현장 수요를 먼저 확인한 뒤 앵커와 중국음식·기존 일식회집 사업자을 묶은 소규모 파일럿을 운영",
+        "primary_kpi": "비앵커 이용금액 변화율 | 비앵커 이용건수 변화율 | 소비다양성 Entropy | 소비집중도 HHI",
+        "secondary_kpi": "연계업종 소비비중 | 일식회집 점포밀도 | 수요-공급 Gap",
+        "protection_kpi": "일식회집 이용금액 변화율 | 일식회집 이용건수 변화율 | 일식회집 점포밀도",
+        "evaluation_design": "3개월은 조기점검, 6개월은 본평가로 두고 같은 Peer Group의 복수 유사 비개입 지역을 비교군으로 매칭한다. 사전추세 확인과 분기·계절 통제 후 이중차분 추정치로 해석"
+      },
+      "warnings": [
+        "매핑 추가확인",
+        "동일 Peer·업종 수요 하위절반"
+      ],
+      "recommendation": "서울특별시 서초구 일반한식은 기존 M4/M5의 핵심 전략 후보이며 동일 Peer 내 3위·다중 검증 강건으로 저장되어 있고 기존 주의사항은 ‘매핑 추가확인 | 동일 Peer·업종 수요 하위절반’입니다. 팀공유 처방에 따라 연계 지원 검토 업종(중국음식·스넥·제과점)을 함께 검토하되 민감도는 ‘중국음식: 강건 | 스넥: 강건 | 제과점: 강건’와 같이 구분합니다. 일식회집은 보호 모니터링 대상 업종으로 두고 보호관계 시나리오에 따른 선택 변화를 확인합니다. 현장확인형 및 BC 공동혜택은 실행안으로 검토하고 실행 후 주·보조·보호 KPI를 재검증해야 합니다."
+    },
+    {
+      "identity": {
+        "region_code": "28110",
+        "sido": "인천광역시",
+        "sigungu": "중구",
+        "anchor_industry": "서양음식",
+        "analysis_code": "8006"
+      },
+      "diagnosis": {
+        "M1": {
+          "Spend_LQ": "1.4411367952265906",
+          "Count_LQ": "1.2206010730014456",
+          "Supply_LQ_raw": "0.8514610659466483",
+          "Gap_Combined_raw": "0.4431893357426984",
+          "Demand_Strength_aux": "1.3262929987734389"
+        },
+        "M2": {
+          "m2_demand_strength": "0.28238783173882903",
+          "m2_supply_lq": "-0.1608015040038694",
+          "m2_gap": "0.4431893357426984",
+          "m2_spend_entropy": "0.7663466750239878",
+          "m2_supply_entropy": "0.8130262985748303",
+          "rs_m2_demand_strength": "0.8769953647869796",
+          "rs_m2_supply_lq": "-0.2874260026083528",
+          "rs_m2_gap": "1.410093084063016",
+          "rs_m2_spend_entropy": "0.4181363231680589",
+          "rs_m2_supply_entropy": "-0.17598922736349593"
+        }
+      },
+      "peer": {
+        "id": "",
+        "name": "외식 전문업종 특화형"
+      },
+      "ranking": {
+        "official_m4_score": "78.84806355511421",
+        "peer_rank": "4",
+        "success_probability": false
+      },
+      "decision": {
+        "review_level": "핵심 전략 후보",
+        "priority_field_review": "True",
+        "strategy_type": "공급 보완 우선 검토",
+        "robustness": "다중 검증 강건"
+      },
+      "portfolio": {
+        "anchor": "서양음식",
+        "linkages": [
+          {
+            "industry": "제과점",
+            "score": "95.387797",
+            "robustness": "강건"
+          },
+          {
+            "industry": "스넥",
+            "score": "68.809524",
+            "robustness": "강건"
+          },
+          {
+            "industry": "일식회집",
+            "score": "65.494158",
+            "robustness": "안정"
+          }
+        ],
+        "protection": {
+          "industry": "일반한식",
+          "score": "81.547532",
+          "label": "보호 모니터링 대상 업종"
+        }
+      },
+      "action": {
+        "type": "확산보완형",
+        "bc_benefit": "앵커와 제과점·기존 일반한식 사업자부터 제한기간 교차혜택을 시험하고 비앵커 반응 확인 후 제과점·스넥·일식회집으로 확대",
+        "primary_kpi": "비앵커 이용금액 변화율 | 비앵커 이용건수 변화율 | 소비다양성 Entropy | 소비집중도 HHI",
+        "secondary_kpi": "연계업종 소비비중 | 일반한식 점포밀도 | 수요-공급 Gap",
+        "protection_kpi": "일반한식 이용금액 변화율 | 일반한식 이용건수 변화율 | 일반한식 점포밀도",
+        "evaluation_design": "3개월은 조기점검, 6개월은 본평가로 두고 같은 Peer Group의 복수 유사 비개입 지역을 비교군으로 매칭한다. 사전추세 확인과 분기·계절 통제 후 이중차분 추정치로 해석"
+      },
+      "warnings": [],
+      "recommendation": "인천광역시 중구 서양음식은 기존 M4/M5의 핵심 전략 후보이며 동일 Peer 내 4위·다중 검증 강건으로 저장되어 있고 기존 주의사항은 ‘주의사항 없음’입니다. 팀공유 처방에 따라 연계 지원 검토 업종(제과점·스넥·일식회집)을 함께 검토하되 민감도는 ‘제과점: 강건 | 스넥: 강건 | 일식회집: 안정’와 같이 구분합니다. 일반한식은 보호 모니터링 대상 업종으로 두고 보호관계 시나리오에 따른 선택 변화를 확인합니다. 확산보완형 및 BC 공동혜택은 실행안으로 검토하고 실행 후 주·보조·보호 KPI를 재검증해야 합니다."
+    },
+    {
+      "identity": {
+        "region_code": "11440",
+        "sido": "서울특별시",
+        "sigungu": "마포구",
+        "anchor_industry": "스넥",
+        "analysis_code": "8021"
+      },
+      "diagnosis": {
+        "M1": {
+          "Spend_LQ": "1.1230004533071811",
+          "Count_LQ": "1.170373609806201",
+          "Supply_LQ_raw": "0.8663107465727771",
+          "Gap_Combined_raw": "0.2801751559583151",
+          "Demand_Strength_aux": "1.1464423641645165"
+        },
+        "M2": {
+          "m2_demand_strength": "0.13666355093532406",
+          "m2_supply_lq": "-0.14351160502299123",
+          "m2_gap": "0.2801751559583151",
+          "m2_spend_entropy": "0.7749435786480215",
+          "m2_supply_entropy": "0.8223364762648001",
+          "rs_m2_demand_strength": "0.497972634526066",
+          "rs_m2_supply_lq": "-0.24020930329094847",
+          "rs_m2_gap": "0.8927913710402343",
+          "rs_m2_spend_entropy": "0.5063536378657595",
+          "rs_m2_supply_entropy": "0.07154489097337316"
+        }
+      },
+      "peer": {
+        "id": "",
+        "name": "외식 전문업종 특화형"
+      },
+      "ranking": {
+        "official_m4_score": "77.17643164515061",
+        "peer_rank": "6",
+        "success_probability": false
+      },
+      "decision": {
+        "review_level": "핵심 전략 후보",
+        "priority_field_review": "False",
+        "strategy_type": "공급 보완 우선 검토",
+        "robustness": "다중 검증 강건"
+      },
+      "portfolio": {
+        "anchor": "스넥",
+        "linkages": [
+          {
+            "industry": "중국음식",
+            "score": "85.537659",
+            "robustness": "강건"
+          },
+          {
+            "industry": "편의점",
+            "score": "59.498854",
+            "robustness": "조건부"
+          },
+          {
+            "industry": "일식회집",
+            "score": "55.820896",
+            "robustness": "안정"
+          }
+        ],
+        "protection": {
+          "industry": "제과점",
+          "score": "87.464278",
+          "label": "보호 모니터링 대상 업종"
+        }
+      },
+      "action": {
+        "type": "현장확인형",
+        "bc_benefit": "업종 매핑·현장 수요를 먼저 확인한 뒤 앵커와 중국음식·기존 제과점 사업자을 묶은 소규모 파일럿을 운영",
+        "primary_kpi": "비앵커 이용금액 변화율 | 비앵커 이용건수 변화율 | 소비다양성 Entropy | 소비집중도 HHI",
+        "secondary_kpi": "연계업종 소비비중 | 제과점 점포밀도 | 수요-공급 Gap",
+        "protection_kpi": "제과점 이용금액 변화율 | 제과점 이용건수 변화율 | 제과점 점포밀도",
+        "evaluation_design": "3개월은 조기점검, 6개월은 본평가로 두고 같은 Peer Group의 복수 유사 비개입 지역을 비교군으로 매칭한다. 사전추세 확인과 분기·계절 통제 후 이중차분 추정치로 해석"
+      },
+      "warnings": [
+        "매핑 추가확인"
+      ],
+      "recommendation": "서울특별시 마포구 스넥은 기존 M4/M5의 핵심 전략 후보이며 동일 Peer 내 6위·다중 검증 강건으로 저장되어 있고 기존 주의사항은 ‘매핑 추가확인’입니다. 팀공유 처방에 따라 연계 지원 검토 업종(중국음식·편의점·일식회집)을 함께 검토하되 민감도는 ‘중국음식: 강건 | 편의점: 조건부 | 일식회집: 안정’와 같이 구분합니다. 제과점은 보호 모니터링 대상 업종으로 두고 보호관계 시나리오에 따른 선택 변화를 확인합니다. 현장확인형 및 BC 공동혜택은 실행안으로 검토하고 실행 후 주·보조·보호 KPI를 재검증해야 합니다."
+    }
+  ],
+  "real_world_validation": {
+    "direct_validation_of_core9": false,
+    "role": "외부 실제 앵커 사례를 활용한 탐색적 준실험 검증",
+    "cases": [
+      {
+        "case_id": "C01_APPLE_MYEONGDONG",
+        "case": "Apple 명동",
+        "treatment_area": "명동(명동거리)",
+        "opening_date": "2022-04-09",
+        "outcome": "nonanchor_sales",
+        "main_percent_change": "15.834642998794823",
+        "main_p_value": "0.0005211439489435942",
+        "linear_pretrend_status": "유의한 사전추세 미탐지",
+        "linear_pretrend_p_value": "0.19366080901383917",
+        "preblock_placebo_status": "주의: 사전기간 수준 차이 탐지",
+        "preblock_placebo_p_value": "0.0262100941616154",
+        "loco_status": "방향 유지",
+        "loco_range_percent": "10.255705360747957 ~ 25.55597408603576",
+        "additional_sensitivity": "해당 case×outcome의 별도 broad-industry 민감도 없음",
+        "evidence_status": "해석 주의",
+        "source_interpretation_status": "pretrend_warning",
+        "source_interpretation_label": "사전추세/사전수준 경고로 인과해석 보류",
+        "safe_interpretation": "Apple 명동 개점 전후 비앵커 매출는 매칭 비교상권 대비 양(+) 방향의 저장 패턴(15.834642998794823%)을 보였다. 사전추세·사전기간 및 비교상권 민감도를 함께 고려한 탐색적 결과다.",
+        "limitation": "관찰자료 기반 매칭 비교상권 분석이며 공식 핵심 9개나 앵커의 인과효과·성공 가능성을 검증하지 않음",
+        "legacy_joint_pretrend_valid": "False",
+        "legacy_joint_pretrend_issue": "음수 F-statistic과 p=1이 저장되어 정상 검정 통과 근거로 사용할 수 없음",
+        "source": "../M5_고도화.zip!M5_고도화/재현자료/seoul_did/M5C_final_summary.csv"
+      },
+      {
+        "case_id": "C01_APPLE_MYEONGDONG",
+        "case": "Apple 명동",
+        "treatment_area": "명동(명동거리)",
+        "opening_date": "2022-04-09",
+        "outcome": "nonanchor_stores",
+        "main_percent_change": "5.576903234999597",
+        "main_p_value": "0.11142782334647279",
+        "linear_pretrend_status": "주의: 유의한 사전추세 탐지",
+        "linear_pretrend_p_value": "0.002408917795136275",
+        "preblock_placebo_status": "주의: 사전기간 수준 차이 탐지",
+        "preblock_placebo_p_value": "0.00011296271250854047",
+        "loco_status": "방향 유지",
+        "loco_range_percent": "3.902530082697475 ~ 7.970913482158215",
+        "additional_sensitivity": "해당 case×outcome의 별도 broad-industry 민감도 없음",
+        "evidence_status": "해석 주의",
+        "source_interpretation_status": "pretrend_warning",
+        "source_interpretation_label": "사전추세/사전수준 경고로 인과해석 보류",
+        "safe_interpretation": "Apple 명동 개점 전후 비앵커 점포수는 매칭 비교상권 대비 양(+) 방향의 저장 패턴(5.576903234999597%)을 보였다. 사전추세·사전기간 및 비교상권 민감도를 함께 고려한 탐색적 결과다.",
+        "limitation": "관찰자료 기반 매칭 비교상권 분석이며 공식 핵심 9개나 앵커의 인과효과·성공 가능성을 검증하지 않음",
+        "legacy_joint_pretrend_valid": "False",
+        "legacy_joint_pretrend_issue": "음수 F-statistic과 p=1이 저장되어 정상 검정 통과 근거로 사용할 수 없음",
+        "source": "../M5_고도화.zip!M5_고도화/재현자료/seoul_did/M5C_final_summary.csv"
+      },
+      {
+        "case_id": "C02_MUSINSA_GANGNAM",
+        "case": "무신사 스탠다드 강남",
+        "treatment_area": "신논현역",
+        "opening_date": "2022-07-01",
+        "outcome": "nonanchor_sales",
+        "main_percent_change": "-2.5512266789616045",
+        "main_p_value": "0.4784982486882937",
+        "linear_pretrend_status": "유의한 사전추세 미탐지",
+        "linear_pretrend_p_value": "0.33317586719512793",
+        "preblock_placebo_status": "주의: 사전기간 수준 차이 탐지",
+        "preblock_placebo_p_value": "0.00013547590916724794",
+        "loco_status": "부호 변경",
+        "loco_range_percent": "-7.20831989350732 ~ 1.8379506811824875",
+        "additional_sensitivity": "해당 case×outcome의 별도 broad-industry 민감도 없음",
+        "evidence_status": "해석 주의",
+        "source_interpretation_status": "pretrend_warning_and_loco_unstable",
+        "source_interpretation_label": "사전수준 경고 및 Control 민감성으로 해석 보류",
+        "safe_interpretation": "무신사 스탠다드 강남 개점 전후 비앵커 매출는 매칭 비교상권 대비 음(-) 방향의 저장 패턴(-2.5512266789616045%)을 보였다. 사전추세·사전기간 및 비교상권 민감도를 함께 고려한 탐색적 결과다.",
+        "limitation": "관찰자료 기반 매칭 비교상권 분석이며 공식 핵심 9개나 앵커의 인과효과·성공 가능성을 검증하지 않음",
+        "legacy_joint_pretrend_valid": "False",
+        "legacy_joint_pretrend_issue": "음수 F-statistic과 p=1이 저장되어 정상 검정 통과 근거로 사용할 수 없음",
+        "source": "../M5_고도화.zip!M5_고도화/재현자료/seoul_did/M5C_final_summary.csv"
+      },
+      {
+        "case_id": "C02_MUSINSA_GANGNAM",
+        "case": "무신사 스탠다드 강남",
+        "treatment_area": "신논현역",
+        "opening_date": "2022-07-01",
+        "outcome": "nonanchor_stores",
+        "main_percent_change": "0.910916994843447",
+        "main_p_value": "0.0014722615727596716",
+        "linear_pretrend_status": "유의한 사전추세 미탐지",
+        "linear_pretrend_p_value": "0.3404946806075876",
+        "preblock_placebo_status": "유의한 사전기간 수준 차이 미탐지",
+        "preblock_placebo_p_value": "0.5808654963991793",
+        "loco_status": "방향 유지",
+        "loco_range_percent": "0.7490953590937988 ~ 1.2247702751236433",
+        "additional_sensitivity": "일반의류+신발+가방 제외: 1.1177453040573493%, p=0.00016420308174238822",
+        "evidence_status": "상대적으로 안정적 패턴",
+        "source_interpretation_status": "robust_positive_pattern",
+        "source_interpretation_label": "검증 전반에서 일관된 양(+) 패턴",
+        "safe_interpretation": "무신사 스탠다드 강남 개점 이후 비앵커 업종 점포수가 매칭 비교상권 대비 상대적으로 높은 변화 패턴을 보였으며, 비교상권 변경 및 업종범위 민감도에서도 양의 방향이 유지되었다.",
+        "limitation": "관찰자료 기반 매칭 비교상권 분석이며 공식 핵심 9개나 앵커의 인과효과·성공 가능성을 검증하지 않음",
+        "legacy_joint_pretrend_valid": "False",
+        "legacy_joint_pretrend_issue": "음수 F-statistic과 p=1이 저장되어 정상 검정 통과 근거로 사용할 수 없음",
+        "source": "../M5_고도화.zip!M5_고도화/재현자료/seoul_did/M5C_final_summary.csv"
+      },
+      {
+        "case_id": "C03_APPLE_HONGDAE",
+        "case": "Apple 홍대",
+        "treatment_area": "홍대입구역(홍대)",
+        "opening_date": "2024-01-20",
+        "outcome": "nonanchor_sales",
+        "main_percent_change": "0.19916864051956473",
+        "main_p_value": "0.9464307815807799",
+        "linear_pretrend_status": "유의한 사전추세 미탐지",
+        "linear_pretrend_p_value": "0.16374087960565478",
+        "preblock_placebo_status": "유의한 사전기간 수준 차이 미탐지",
+        "preblock_placebo_p_value": "0.4529872905184186",
+        "loco_status": "부호 변경",
+        "loco_range_percent": "-1.088240040968802 ~ 2.0461492221069078",
+        "additional_sensitivity": "해당 case×outcome의 별도 broad-industry 민감도 없음",
+        "evidence_status": "해석 주의",
+        "source_interpretation_status": "no_clear_average_effect",
+        "source_interpretation_label": "평균적인 변화가 뚜렷하지 않음",
+        "safe_interpretation": "Apple 홍대 개점 전후 비앵커 매출는 매칭 비교상권 대비 양(+) 방향의 저장 패턴(0.19916864051956473%)을 보였다. 사전추세·사전기간 및 비교상권 민감도를 함께 고려한 탐색적 결과다.",
+        "limitation": "관찰자료 기반 매칭 비교상권 분석이며 공식 핵심 9개나 앵커의 인과효과·성공 가능성을 검증하지 않음",
+        "legacy_joint_pretrend_valid": "False",
+        "legacy_joint_pretrend_issue": "비정상적으로 큰 F-statistic이 저장된 legacy 공동검정으로 통합 판정에서 격리",
+        "source": "../M5_고도화.zip!M5_고도화/재현자료/seoul_did/M5C_final_summary.csv"
+      },
+      {
+        "case_id": "C03_APPLE_HONGDAE",
+        "case": "Apple 홍대",
+        "treatment_area": "홍대입구역(홍대)",
+        "opening_date": "2024-01-20",
+        "outcome": "nonanchor_stores",
+        "main_percent_change": "4.509346397725245",
+        "main_p_value": "7.5900460224655925e-06",
+        "linear_pretrend_status": "주의: 유의한 사전추세 탐지",
+        "linear_pretrend_p_value": "0.00020791817509015003",
+        "preblock_placebo_status": "주의: 사전기간 수준 차이 탐지",
+        "preblock_placebo_p_value": "0.00016044509202853513",
+        "loco_status": "방향 유지",
+        "loco_range_percent": "4.039330550460507 ~ 5.013883483447268",
+        "additional_sensitivity": "해당 case×outcome의 별도 broad-industry 민감도 없음",
+        "evidence_status": "해석 주의",
+        "source_interpretation_status": "pretrend_warning",
+        "source_interpretation_label": "사전추세/사전수준 경고로 인과해석 보류",
+        "safe_interpretation": "Apple 홍대 개점 전후 비앵커 점포수는 매칭 비교상권 대비 양(+) 방향의 저장 패턴(4.509346397725245%)을 보였다. 사전추세·사전기간 및 비교상권 민감도를 함께 고려한 탐색적 결과다.",
+        "limitation": "관찰자료 기반 매칭 비교상권 분석이며 공식 핵심 9개나 앵커의 인과효과·성공 가능성을 검증하지 않음",
+        "legacy_joint_pretrend_valid": "False",
+        "legacy_joint_pretrend_issue": "비정상적으로 큰 F-statistic이 저장된 legacy 공동검정으로 통합 판정에서 격리",
+        "source": "../M5_고도화.zip!M5_고도화/재현자료/seoul_did/M5C_final_summary.csv"
+      }
+    ]
+  },
+  "limitations": [
+    "BC카드 데이터는 전체 시장이 아님",
+    "분석기간은 2026년 1~6월",
+    "시군구 단위 집계",
+    "시간대·요일·개별가맹점·고객 이동경로가 없음",
+    "실제 임대료·세부 입지·현장 경쟁상황 미포함",
+    "업종 매핑 불확실성이 존재",
+    "Gap은 부족 점포 수가 아님",
+    "예상 매출을 계산한 것이 아님",
+    "성공확률을 계산한 것이 아님",
+    "Linkage는 실제 동반방문 인과관계를 의미하지 않음",
+    "Protection은 보호효과가 입증된 것이 아님",
+    "외부 DiD는 핵심 9 직접 효과검증이 아님"
+  ]
+}
